@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperial Trade Sentinel | AI Agent for SADC Trade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid #38bdf8;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+        }
+        .card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .metric {
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .video-card {
+            background: #0f172a;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        .video-card iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+        }
+        .video-title {
+            padding: 0.75rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        .btn-github {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #38bdf8;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        pre {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+        .code-block {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>⚡ Imperial Trade Sentinel</h1>
+        <div class="tagline">AI Agent for Real‑Time SADC Trade Intelligence</div>
+        <div>
+            <span class="badge">Microsoft Agents League 2026</span>
+            <span class="badge">Reasoning Agents Track</span>
+            <span class="badge">Foundry IQ (Azure OpenAI)</span>
+        </div>
+    </header>
+
+    <div class="card">
+        <h2>📈 Live Imperial Metrics</h2>
+        <div class="metrics-grid">
+            <div class="metric">
+                <div class="metric-value">R269.9B</div>
+                <div class="metric-label">Portfolio Valuation</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">53.98%</div>
+                <div class="metric-label">Progress to R500B</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">R5.02M</div>
+                <div class="metric-label">SADC Trade Volume</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">R238M</div>
+                <div class="metric-label">Wealth Lock Gain</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">275/tonne</div>
+                <div class="metric-label">Lithium Price</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">59</div>
+                <div class="metric-label">Active Services</div>
+            </div>
+        </div>
+        <p><em>These metrics are fetched live from the imperial stack running on a Samsung Galaxy A73 (Android 16).</em></p>
+    </div>
+
+    <div class="card">
+        <h2>🎥 Demo Videos</h2>
+        <div class="video-grid">
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/RAmNzUbJcf0" title="Environment Showcase" allowfullscreen></iframe>
+                <div class="video-title">1. Environment Showcase</div>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/jfC0BK7VC1g" title="Live Agent Queries" allowfullscreen></iframe>
+                <div class="video-title">2. Live Agent Queries</div>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/cOQwYMBeGeY" title="Mobile Stack" allowfullscreen></iframe>
+                <div class="video-title">3. Mobile-First AI Stack</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🤖 How the Agent Works</h2>
+        <p>The <strong>Imperial Trade Sentinel</strong> agent answers natural‑language questions by:</p>
+        <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Fetching live telemetry from 59 microservices (portfolio, lithium, trade volume, etc.) running on a Samsung phone via Termux.</li>
+            <li>Sending the question + context to <strong>Microsoft Azure OpenAI (Foundry IQ)</strong> for grounded reasoning.</li>
+            <li>Returning a cited, verifiable answer.</li>
+        </ol>
+        <div class="code-block">
+            <pre>curl -X POST http://localhost:8123/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is our portfolio valuation and progress to R500B?"}'</pre>
+        </div>
+        <p>✅ Real response (from our Azure OpenAI deployment):</p>
+        <pre>{
+  "answer": "The portfolio value is 269,911,161,297.38 (53.98% progress to R500B).",
+  "sources": ["Azure AI Foundry with imperial context"],
+  "imperial_context": {...}
+}</pre>
+    </div>
+
+    <div class="card">
+        <h2>🔗 Links</h2>
+        <p>
+            <a href="https://github.com/Humbulan/imperial-trade-sentinel" class="btn btn-github" target="_blank">📦 GitHub Repository</a>
+            <a href="https://agentsleague.microsoft.com/projects/imperial-trade-sentinel" class="btn" target="_blank">🏆 Hackathon Project Page</a>
+        </p>
+    </div>
+
+    <footer>
+        Built by Humbulani Mudau | Imperial Stack | Agents League 2026
+    </footer>
+</div>
+</body>
+</html>
