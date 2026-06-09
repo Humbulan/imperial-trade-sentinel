@@ -19,8 +19,7 @@ Imperial Trade Sentinel is an AI agent that answers natural‑language questions
 - All answers include citations pointing to the source
 
 ## Demo video
-[Link to YouTube – 3 min demo]
-
+https://youtube.com/shorts/jfC0BK7VC1g
 ## How to run
 ```bash
 pip install -r requirements.txt
