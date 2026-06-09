@@ -1,28 +1,14 @@
 #!/usr/bin/env python3
-"""
-Imperial Trade Sentinel - Microsoft Agents League Submission
-Track: Reasoning Agents (Foundry IQ)
-Integrates with Microsoft Foundry IQ for grounded, cited answers.
-"""
-
 import os
 import json
 import requests
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
-from functools import lru_cache
-import time
 
 load_dotenv()
 
 app = Flask(__name__)
 
-# ========== Configuration ==========
-FOUNDRY_ENDPOINT = os.getenv("FOUNDRY_ENDPOINT", "https://api.foundry.microsoft.com/v1")
-FOUNDRY_API_KEY = os.getenv("FOUNDRY_API_KEY")
-USE_MOCK_IQ = os.getenv("USE_MOCK_IQ", "false").lower() == "true"
-
-# Imperial internal service endpoints (all running on localhost)
 IMPERIAL_SERVICES = {
     "portfolio": "http://localhost:8124/api/value",
     "trade_volume": "http://localhost:8124/api/volume",
@@ -32,7 +18,6 @@ IMPERIAL_SERVICES = {
     "system_status": "http://localhost:8124/api/status",
 }
 
-# ========== Data Fetching from Imperial Stack ==========
 def fetch_imperial_data(metric):
     url = IMPERIAL_SERVICES.get(metric)
     if not url:
@@ -64,33 +49,42 @@ def gather_context(question):
     return context
 
 def query_foundry_iq(question, context):
-    if USE_MOCK_IQ or not FOUNDRY_API_KEY:
-        return {
-            "answer": f"Based on the provided data, {question[:100]}... (mock IQ response. Replace with real Foundry IQ call.)",
-            "sources": ["Imperial internal telemetry"]
-        }
+    endpoint = os.getenv("FOUNDRY_ENDPOINT")
+    api_key = os.getenv("FOUNDRY_API_KEY")
+    deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o")
+
+    if not endpoint or not api_key:
+        return {"answer": "Credentials missing. Set FOUNDRY_ENDPOINT and FOUNDRY_API_KEY in .env", "sources": []}
+
+    context_str = json.dumps(context, indent=2)
+    system_prompt = f"""You are Imperial Trade Sentinel, an AI agent for SADC trade logistics.
+Answer the user's question using ONLY the provided imperial data context.
+If the answer is not in the context, say so.
+Cite specific values from the context.
+
+Context: {context_str}"""
+
+    chat_url = f"{endpoint}/openai/deployments/{deployment}/chat/completions?api-version=2024-02-15-preview"
+    headers = {"api-key": api_key, "Content-Type": "application/json"}
     payload = {
-        "query": question,
-        "context": json.dumps(context),
-        "grounding": True,
-        "max_tokens": 500
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": question}
+        ],
+        "max_tokens": 500,
+        "temperature": 0.3
     }
-    headers = {
-        "Authorization": f"Bearer {FOUNDRY_API_KEY}",
-        "Content-Type": "application/json"
-    }
+
     try:
-        response = requests.post(f"{FOUNDRY_ENDPOINT}/query", json=payload, headers=headers, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            return {
-                "answer": data.get("answer", "No answer"),
-                "sources": data.get("sources", [])
-            }
+        resp = requests.post(chat_url, headers=headers, json=payload, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            answer = data["choices"][0]["message"]["content"]
+            return {"answer": answer, "sources": ["Azure AI Foundry with imperial context"]}
         else:
-            return {"answer": f"IQ error: {response.status_code}", "sources": []}
+            return {"answer": f"API error: {resp.status_code} - {resp.text[:200]}", "sources": []}
     except Exception as e:
-        return {"answer": f"Failed to reach Foundry IQ: {str(e)}", "sources": []}
+        return {"answer": f"Request failed: {str(e)}", "sources": []}
 
 @app.route("/ask", methods=["POST"])
 def ask():
@@ -109,7 +103,7 @@ def ask():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "Imperial Trade Sentinel is online", "iq_ready": not USE_MOCK_IQ and bool(FOUNDRY_API_KEY)})
+    return jsonify({"status": "Imperial Trade Sentinel is online", "iq_ready": not os.getenv("USE_MOCK_IQ", "false").lower() == "true"})
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8123))
